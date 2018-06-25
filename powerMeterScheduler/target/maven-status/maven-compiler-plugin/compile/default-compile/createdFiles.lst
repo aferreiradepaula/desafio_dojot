@@ -1,4 +1,0 @@
-br\com\powerMeterScheduler\quartz\QuartzListener.class
-br\com\powerMeterScheduler\job\FillDojotDeviceJob.class
-br\com\powerMeterScheduler\job\PowerMeterJob.class
-br\com\powerMeterScheduler\util\Util.class
