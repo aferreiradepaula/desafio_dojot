@@ -1,2 +1,2 @@
-voltagem:127V;corrente:10A;
-voltagem:227V;corrente:44A;
+VAr_Q2:127V;VAr_T:400V;
+VAr_Q2:227V;VAr_T:380V;
