@@ -5,20 +5,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
-import java.nio.charset.Charset;
-import java.io.FileWriter;
-import java.io.ObjectInputStream.GetField;
 
-import org.json.JSONObject;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-
-import com.mchange.v2.codegen.bean.GeneratorExtension;
-
-import br.com.powerMeterScheduler.device.ModbusConstantsMap;
-import br.com.powerMeterScheduler.protocols.MQTTProtocolManagement;
-import br.com.powerMeterScheduler.util.Util;
 
 /**
  *
@@ -27,14 +17,14 @@ import br.com.powerMeterScheduler.util.Util;
  * Classe responsavel pela tarefa de leitura do arquivo gerado no job PowerMeterJob.java 
  * e posterior envio dos dados para o device na plataforma dojot via serviço
  */
-public class FillBillingJob{ //implements Job {
+public class FillBillingJob implements Job {
 
-	//public void execute(JobExecutionContext context) throws JobExecutionException {
+	public void execute(JobExecutionContext context) throws JobExecutionException {
 	
         //System.out.println("Executando o envio do arquivo para o CBIL");
-        private static final int BUFFER_SIZE = 4096;
+       final int BUFFER_SIZE = 4096;
         
-        public static void main(String[] args) {
+        //public static void main(String[] args) {
             String ftpUrl = "ftp://%s:%s@%s/%s";
             String host = "awsdsno25";
             String user = "cbill005";
