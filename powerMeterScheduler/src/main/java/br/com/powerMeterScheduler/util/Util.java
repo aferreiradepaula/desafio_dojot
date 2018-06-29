@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -23,6 +24,10 @@ public class Util {
 	public static final String PASSWD = "password";
 	public static final String FILE_CONTENT_PATH = "file_content_path";
 	public static final String FILE_CONTENT_NAME = "file_content_name";
+	public static final String POWER_METER_REPETIION_TIME = "power_meter_repetition_time";
+	public static final String FILL_DOJOT_DEVICE_REPETITION_TIME = "fill_dojot_device_repetition_time";
+	public static final String ELAPSE_TIME_BETWEEN_PROCESS = "elapse_time_between_process";
+	public static final String DEVICE_READER_COMMAND = "device_reader_command";
 	private static final Path filePath = Paths.get(getConfig(Util.FILE_CONTENT_PATH)+getConfig(Util.FILE_CONTENT_NAME));
 	
 	
@@ -32,7 +37,7 @@ public class Util {
 	 * @return
 	 */
 	public static String getConfig(String configName) {
-		return deviceConfig.getString(configName);
+		return deviceConfig.getString(configName).trim();
 	}
 
 	/**
@@ -70,13 +75,17 @@ public class Util {
 	   StringBuilder stringBuilder = new StringBuilder();
 		
 		try	{
-			List<Object>  linhas = Arrays.asList(Files.lines( filePath, StandardCharsets.UTF_8).toArray());
+			boolean exists = Files.exists(filePath, new LinkOption[]{ LinkOption.NOFOLLOW_LINKS});
 			
-			//Se quiser quebra de linha entre as linhas assim 
-			//como no arquivo, incluir .append("\n") na linha abaixo
-			for (Object object : linhas) {
-				stringBuilder.append(object.toString().trim());
-				stringBuilder.append(";");
+			if (exists) {			
+				List<Object>  linhas = Arrays.asList(Files.lines( filePath, StandardCharsets.UTF_8).toArray());
+
+				//Se quiser quebra de linha entre as linhas assim 
+				//como no arquivo, incluir .append("\n") na linha abaixo
+				for (Object object : linhas) {
+					stringBuilder.append(object.toString().trim());
+					stringBuilder.append(";");
+				}
 			}
 		}
 		catch (IOException e) {

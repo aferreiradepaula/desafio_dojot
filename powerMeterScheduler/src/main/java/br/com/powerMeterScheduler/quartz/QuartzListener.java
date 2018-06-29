@@ -16,10 +16,15 @@ import org.quartz.impl.StdSchedulerFactory;
 
 import br.com.powerMeterScheduler.job.FillDojotDeviceJob;
 import br.com.powerMeterScheduler.job.PowerMeterJob;
+import br.com.powerMeterScheduler.util.Util;
 
 @WebListener
 public class QuartzListener extends QuartzInitializerListener {
 
+	Integer powerMeterRepetitionTime = Integer.valueOf(Util.getConfig(Util.POWER_METER_REPETIION_TIME));
+	Integer fillDojotDeviceRepetitionTime = Integer.valueOf(Util.getConfig(Util.FILL_DOJOT_DEVICE_REPETITION_TIME));
+	Integer elapseTimeBetweenProcess = Integer.valueOf(Util.getConfig(Util.ELAPSE_TIME_BETWEEN_PROCESS)) * 1000; // converte para milis
+	
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         
@@ -36,15 +41,16 @@ public class QuartzListener extends QuartzInitializerListener {
         	JobDetail jobFillDojotDevice = JobBuilder.newJob(FillDojotDeviceJob.class).withIdentity(jobKeyFillDojotDevice).build();
 
         	Trigger triggerPowerMeter = TriggerBuilder
-        			.newTrigger().withIdentity("powerMeterTriggerName", "equipe3").withSchedule(SimpleScheduleBuilder.repeatSecondlyForever(2)).build();
+        			.newTrigger().withIdentity("powerMeterTriggerName", "equipe3").withSchedule(SimpleScheduleBuilder.repeatSecondlyForever(powerMeterRepetitionTime)).build();
         
         	Trigger triggerFillDojotDevice = TriggerBuilder
-        			.newTrigger().withIdentity("fillDojotDeviceTriggerName", "equipe3").withSchedule(SimpleScheduleBuilder.repeatSecondlyForever(4)).build();
+        			.newTrigger().withIdentity("fillDojotDeviceTriggerName", "equipe3").withSchedule(SimpleScheduleBuilder.repeatSecondlyForever(fillDojotDeviceRepetitionTime)).build();
          	
         	
         	Scheduler scheduler = factory.getScheduler();
         	scheduler.start();
         	scheduler.scheduleJob(jobPowerMeter, triggerPowerMeter);
+        	Thread.sleep(elapseTimeBetweenProcess);
         	scheduler.scheduleJob(jobFillDojotDevice, triggerFillDojotDevice);
         	
             
