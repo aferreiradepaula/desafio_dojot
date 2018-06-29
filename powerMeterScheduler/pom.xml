@@ -47,5 +47,17 @@
 	    </dependencies>
   <build>
     <finalName>powerMeterScheduler</finalName>
+    <plugins>
+	    <plugin>
+	      <groupId>org.apache.maven.plugins</groupId>
+	      <artifactId>maven-compiler-plugin</artifactId>
+	      <version>3.7.0</version>
+	      <configuration>
+	        <!-- Necessary in order for the debug levels to be considered-->
+	        <debug>true</debug> 
+	        <debugLevel>lines,vars,source</debugLevel>
+	      </configuration>
+	    </plugin>
+  	</plugins>
   </build>
 </project>
