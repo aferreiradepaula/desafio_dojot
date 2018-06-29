@@ -5,12 +5,16 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.Charset;
 import java.io.FileWriter;
+import java.io.ObjectInputStream.GetField;
 
 import org.json.JSONObject;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+
+import com.mchange.v2.codegen.bean.GeneratorExtension;
 
 import br.com.powerMeterScheduler.device.ModbusConstantsMap;
 import br.com.powerMeterScheduler.protocols.MQTTProtocolManagement;
@@ -35,8 +39,10 @@ public class FillBillingJob{ //implements Job {
             String host = "awsdsno25";
             String user = "cbill005";
             String pass = "usuario";
-            String filePath = "C:/ENTRADA9";
-            String uploadPath = "/cbill/files/rat/batch/input/ENTRADAX3.txt";
+            String filePath = "C:/ENTRADAX3B.txt";
+            //String filePath = "ENTRADA1234.txt";
+            
+            String uploadPath = "/cbill/files/rat/batch/input/ENTRADA790.txt";
      
             ftpUrl = String.format(ftpUrl, user, pass, host, uploadPath);
             System.out.println("Upload URL: " + ftpUrl);
@@ -55,6 +61,14 @@ public class FillBillingJob{ //implements Job {
      
 
                 inputStream.close();
+                
+                
+                //byte[] buffer = new byte[BUFFER_SIZE];
+                //String msg = generateCbillLayoyt("PREDIO_12", 89999);
+                //buffer = msg.getBytes(Charset.forName("UTF-8"));
+                //buffer = msg.getBytes();
+                //outputStream.write(buffer);
+                
                 outputStream.close();
      
                 System.out.println("File uploaded");
@@ -62,6 +76,46 @@ public class FillBillingJob{ //implements Job {
                 ex.printStackTrace();
             }
         }      
+     
         
+        private static String generateCbillLayoyt(String accessPoint, Integer quantity){
+        	StringBuilder sb = new StringBuilder("H            DJT DJT");
+        	sb.append("20180629083045");
+        	sb.append("0");
+        	//sb.append("                     PREDIO_12"); //Ponto de acesso tem q ter taamanho 30
+        	int count = 30 - accessPoint.length();
+        	String whiteSpaces = "";
+        	while(count>0){
+        		whiteSpaces +=" ";
+        		count--;
+        	}
+        	sb.append(whiteSpaces+accessPoint);
+        	sb.append("\r\n");
+        	sb.append("M");
+        	sb.append("20180629102045");
+        	int count2 = 40 - accessPoint.length();
+        	String whiteSpaces2 = "";
+        	while(count2>0){
+        		whiteSpaces2 +=" ";
+        		count2--;
+        	}
+        	//sb.append("                               PREDIO_12")
+        	sb.append(whiteSpaces2+accessPoint);
+        	//0000089999
+        	int count3 = 10 - quantity.toString().length();
+        	String whiteSpaces3 = "";
+        	while(count3>0){
+        		whiteSpaces3 +="0";
+        		count3--;
+        	}
+        	sb.append(whiteSpaces3+quantity);
+        	sb.append("\r\n");
+        	sb.append("T");
+        	sb.append("000000000000001");
+        	sb.append("\r\n");
+        	
+        	
+        	return sb.toString();
+        }
     }
 //}
