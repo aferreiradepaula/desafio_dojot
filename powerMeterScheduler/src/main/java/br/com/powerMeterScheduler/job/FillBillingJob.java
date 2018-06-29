@@ -53,21 +53,21 @@ public class FillBillingJob{ //implements Job {
                 OutputStream outputStream = conn.getOutputStream();
                 FileInputStream inputStream = new FileInputStream(filePath);
      
-                byte[] buffer = new byte[BUFFER_SIZE];
-                int bytesRead = -1;
-                while ((bytesRead = inputStream.read(buffer)) != -1) {
-                    outputStream.write(buffer, 0, bytesRead);
-                }
+                //byte[] buffer = new byte[BUFFER_SIZE];
+                //int bytesRead = -1;
+                //while ((bytesRead = inputStream.read(buffer)) != -1) {
+                //    outputStream.write(buffer, 0, bytesRead);
+                //}
      
 
                 inputStream.close();
                 
                 
-                //byte[] buffer = new byte[BUFFER_SIZE];
-                //String msg = generateCbillLayoyt("PREDIO_12", 89999);
+               byte[] buffer = new byte[BUFFER_SIZE];
+                String msg = generateCbillLayoyt("PREDIO_12", 89999);
                 //buffer = msg.getBytes(Charset.forName("UTF-8"));
-                //buffer = msg.getBytes();
-                //outputStream.write(buffer);
+                buffer = msg.getBytes();
+                outputStream.write(buffer);
                 
                 outputStream.close();
      
