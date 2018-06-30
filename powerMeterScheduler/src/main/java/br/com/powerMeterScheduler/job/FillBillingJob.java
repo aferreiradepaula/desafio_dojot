@@ -5,10 +5,13 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.time.LocalDateTime;
 
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+
+import br.com.powerMeterScheduler.util.Util;
 
 /**
  *
@@ -21,40 +24,45 @@ public class FillBillingJob implements Job {
 
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 	
-        //System.out.println("Executando o envio do arquivo para o CBIL");
+        System.out.println("Executando o envio do arquivo para o CBIL");
        final int BUFFER_SIZE = 4096;
         
-        //public static void main(String[] args) {
             String ftpUrl = "ftp://%s:%s@%s/%s";
             String host = "awsdsno25";
             String user = "cbill005";
             String pass = "usuario";
             String filePath = "C:/ENTRADAX3B.txt";
-            //String filePath = "ENTRADA1234.txt";
-            
-            String uploadPath = "/cbill/files/rat/batch/input/ENTRADA790.txt";
+            LocalDateTime dateTime = LocalDateTime.now();
+            String uploadPath = "/cbill/files/rat/batch/input/input_CBILL_"+ dateTime.toString()+ "_.txt";
      
             ftpUrl = String.format(ftpUrl, user, pass, host, uploadPath);
             System.out.println("Upload URL: " + ftpUrl);
      
             try {
+            
+            	//1 - Ler arquivo cbillTotalizer.txt criado pelo Adriano
+            	//2 - Ler arquivo last_sent_cbill.txt
+            	//3 - Fazer o Delta          	
+            	//4 - Enviar o resultado para o BILLING
+            	//5 - Apagar o arquivo last_sent_cbill.txt
+            	//6 - Recriar o aruivo last_cent_cbill.txt atualizado para o calculo do proximo envi           	
+            	Double result = Util.computeCBILL();
+            	
+            	//7 - Aumentando o valor do numero em 4 casas pois o BILING entende 12345 como 1,2345
+            	result = result*10000; 
+            	
+            	//7 - ENVIANDO PARA O BILLING            	
                 URL url = new URL(ftpUrl);
                 URLConnection conn = url.openConnection();
                 OutputStream outputStream = conn.getOutputStream();
                 FileInputStream inputStream = new FileInputStream(filePath);
-     
-                //byte[] buffer = new byte[BUFFER_SIZE];
-                //int bytesRead = -1;
-                //while ((bytesRead = inputStream.read(buffer)) != -1) {
-                //    outputStream.write(buffer, 0, bytesRead);
-                //}
-     
+         
 
                 inputStream.close();
                 
                 
                byte[] buffer = new byte[BUFFER_SIZE];
-                String msg = generateCbillLayoyt("PREDIO_12", 89999);
+                String msg = generateCbillLayoyt("PREDIO_12", result.intValue());
                 //buffer = msg.getBytes(Charset.forName("UTF-8"));
                 buffer = msg.getBytes();
                 outputStream.write(buffer);
@@ -107,5 +115,16 @@ public class FillBillingJob implements Job {
         	
         	return sb.toString();
         }
-    }
-//}
+        public static void main(String[] args){
+			FillBillingJob job = new FillBillingJob();
+			try {
+				job.execute(null);
+			} catch (JobExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	}
+
+}
+
+

@@ -1,5 +1,16 @@
 package br.com.powerMeterScheduler.job;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+
 import org.json.JSONObject;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
@@ -34,6 +45,9 @@ public class FillDojotDeviceJob implements Job {
         
         		jsonMsg.put(ModbusConstantsMap.stringFromCommand(Integer.parseInt(paramName)), paramValue);
         		System.out.println("jsonMsg: "+jsonMsg);
+        		if(ModbusConstantsMap.TOTALIZADOR_MWH_POS_FASE_A.getModBusCommand().toString().equals(paramName)){
+        			Util.createCbillOutput(paramValue);
+        		}
         	}
         	
         	MQTTProtocolManagement  mqtt = new MQTTProtocolManagement();
@@ -42,4 +56,15 @@ public class FillDojotDeviceJob implements Job {
         	Util.deleteFile();
         }
     }
+
+		public static void main(String[] args){
+			FillDojotDeviceJob job = new FillDojotDeviceJob();
+			try {
+				job.execute(null);
+			} catch (JobExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	}
 }
+
