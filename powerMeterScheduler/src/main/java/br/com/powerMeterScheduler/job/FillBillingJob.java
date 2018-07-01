@@ -62,7 +62,9 @@ public class FillBillingJob implements Job {
                 
                 
                byte[] buffer = new byte[BUFFER_SIZE];
-                String msg = generateCbillLayoyt("PREDIO_12", result.intValue());
+
+               //String msg = generateCbillLayoyt("PREDIO_12", result.intValue());
+                String msg = generateCbillLayoyt("201830", result.intValue());
                 //buffer = msg.getBytes(Charset.forName("UTF-8"));
                 buffer = msg.getBytes();
                 outputStream.write(buffer);
@@ -77,18 +79,38 @@ public class FillBillingJob implements Job {
      
         
         private static String generateCbillLayoyt(String accessPoint, Integer quantity){
-        	StringBuilder sb = new StringBuilder("H            DJT DJT");
+           	StringBuilder sbt = new StringBuilder();
+           	sbt.append("HDJT            DJT 201804010830450PTOACESSO201830               \n");
+           	sbt.append("M20180401101010201830                                  ");
+           	int counter = 10 - quantity.toString().length();
+        	String leftZerosQty = "";
+        	while(counter>0){
+        		leftZerosQty +="0";
+        		counter--;
+        	}
+        	sbt.append(leftZerosQty+quantity);
+           	sbt.append("\n");
+           	sbt.append("T000000000000001\n");
+        	
+
+        	
+        	
+        	StringBuilder sb = new StringBuilder("HDJT            DJT ");
+        	
+        	
+        	
         	sb.append("20180629083045");
         	sb.append("0");
         	//sb.append("                     PREDIO_12"); //Ponto de acesso tem q ter taamanho 30
-        	int count = 30 - accessPoint.length();
+        	String pto = "PTOACESSO" + accessPoint;
+        	int count = 30 - pto.length();
         	String whiteSpaces = "";
         	while(count>0){
         		whiteSpaces +=" ";
         		count--;
         	}
-        	sb.append(whiteSpaces+accessPoint);
-        	sb.append("\r\n");
+        	sb.append(accessPoint +  whiteSpaces);
+        	sb.append("\n");
         	sb.append("M");
         	sb.append("20180629102045");
         	int count2 = 40 - accessPoint.length();
@@ -98,22 +120,22 @@ public class FillBillingJob implements Job {
         		count2--;
         	}
         	//sb.append("                               PREDIO_12")
-        	sb.append(whiteSpaces2+accessPoint);
+        	sb.append(accessPoint+whiteSpaces2);
         	//0000089999
         	int count3 = 10 - quantity.toString().length();
-        	String whiteSpaces3 = "";
+        	String leftZeros = "";
         	while(count3>0){
-        		whiteSpaces3 +="0";
+        		leftZeros +="0";
         		count3--;
         	}
-        	sb.append(whiteSpaces3+quantity);
-        	sb.append("\r\n");
+        	sb.append(leftZeros+quantity);
+        	sb.append("\n");
         	sb.append("T");
         	sb.append("000000000000001");
-        	sb.append("\r\n");
+        	sb.append("\n");
         	
         	
-        	return sb.toString();
+        	return sbt.toString();
         }
         public static void main(String[] args){
 			FillBillingJob job = new FillBillingJob();
