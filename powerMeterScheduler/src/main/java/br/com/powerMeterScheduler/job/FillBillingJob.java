@@ -79,6 +79,7 @@ public class FillBillingJob implements Job {
      
         
         private static String generateCbillLayoyt(String accessPoint, Integer quantity){
+        	if (quantity == 0) quantity = 88888;
            	StringBuilder sbt = new StringBuilder();
            	sbt.append("HDJT            DJT 201804010830450PTOACESSO201830               \n");
            	sbt.append("M20180401101010201830                                  ");
@@ -132,9 +133,7 @@ public class FillBillingJob implements Job {
         	sb.append("\n");
         	sb.append("T");
         	sb.append("000000000000001");
-        	sb.append("\n");
-        	
-        	
+        	        	
         	return sbt.toString();
         }
         public static void main(String[] args){
