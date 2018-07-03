@@ -1,6 +1,7 @@
 package br.com.powerMeterScheduler.util;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -99,16 +100,11 @@ public class Util {
 	
 	public static void createLastSentCbill(String paramValue) {
 		
-		boolean exists = Files.exists(fileLastSentCbillPath, new LinkOption[]{ LinkOption.NOFOLLOW_LINKS});
-		
-		if (exists) {
-			deleteFile(fileLastSentCbillPath);	
-		}
+	
 		
 		try {
 			FileWriter arq = new FileWriter(fileLastSentCbillPath.toString());
 		    PrintWriter gravarArq = new PrintWriter(arq);
-			 
 		    gravarArq.printf("%s", paramValue);
 		    arq.close();
 		} catch (IOException e) {
