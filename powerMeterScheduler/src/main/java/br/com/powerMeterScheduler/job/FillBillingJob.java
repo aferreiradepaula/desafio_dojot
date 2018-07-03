@@ -5,7 +5,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.DateFormat;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
@@ -81,8 +84,17 @@ public class FillBillingJob implements Job {
         private static String generateCbillLayoyt(String accessPoint, Integer quantity){
         	if (quantity == 0) quantity = 88888;
            	StringBuilder sbt = new StringBuilder();
-           	sbt.append("HDJT            DJT 201804010830450PTOACESSO201830               \n");
-           	sbt.append("M20180401101010201830                                  ");
+           	LocalDateTime localDateTime = LocalDateTime.now();
+           
+           	DateTimeFormatter df = DateTimeFormatter.BASIC_ISO_DATE;
+           	DateTimeFormatter dfT = DateTimeFormatter.ofPattern("HHmmss");
+           	String time = dfT.format(localDateTime);
+           	String date = df.format(localDateTime);
+           	
+        	/*sbt.append("HDJT            DJT "
+           			+ date +time + "0PTOACESSO201830               \n");
+           	//sbt.append("M20180401101010201830                                  ");
+           	sbt.append("M" + date + time + accessPoint  + "                                  ");
            	int counter = 10 - quantity.toString().length();
         	String leftZerosQty = "";
         	while(counter>0){
@@ -93,16 +105,16 @@ public class FillBillingJob implements Job {
            	sbt.append("\n");
            	sbt.append("T000000000000001\n");
         	
+           	
+        	StringBuilder mock = new StringBuilder(); 
+        	mock.append("HDJT            DJT 201804010830450PTOACESSO201830               \r\n");
+        	mock.append("M20180401101010201830                                  0002250000\r\n");
+            mock.append("T000000000000001\r\n");
+			*/
 
         	
+        	StringBuilder sb = new StringBuilder();
         	
-        	StringBuilder sb = new StringBuilder("HDJT            DJT ");
-        	
-        	
-        	
-        	sb.append("20180629083045");
-        	sb.append("0");
-        	//sb.append("                     PREDIO_12"); //Ponto de acesso tem q ter taamanho 30
         	String pto = "PTOACESSO" + accessPoint;
         	int count = 30 - pto.length();
         	String whiteSpaces = "";
@@ -110,31 +122,33 @@ public class FillBillingJob implements Job {
         		whiteSpaces +=" ";
         		count--;
         	}
-        	sb.append(accessPoint +  whiteSpaces);
-        	sb.append("\n");
-        	sb.append("M");
-        	sb.append("20180629102045");
+        	//LINHA HEADER
+        	String duplicity = "0";
+        	sb.append("HDJT            DJT "+ date + time + duplicity + pto +  whiteSpaces + "\n");        	
+        	
+        	//LINHA M
         	int count2 = 40 - accessPoint.length();
         	String whiteSpaces2 = "";
         	while(count2>0){
         		whiteSpaces2 +=" ";
         		count2--;
         	}
-        	//sb.append("                               PREDIO_12")
-        	sb.append(accessPoint+whiteSpaces2);
-        	//0000089999
+        	        	
         	int count3 = 10 - quantity.toString().length();
         	String leftZeros = "";
         	while(count3>0){
         		leftZeros +="0";
         		count3--;
         	}
-        	sb.append(leftZeros+quantity);
-        	sb.append("\n");
-        	sb.append("T");
-        	sb.append("000000000000001");
+        	sb.append("M" + date + time + accessPoint + whiteSpaces2 + leftZeros + quantity +"\n");
+        	
+        	//LINHA TRAILER
+        	sb.append("T000000000000001\n");
+
         	        	
-        	return sbt.toString();
+        	
+        	
+        	return sb.toString();
         }
         public static void main(String[] args){
 			FillBillingJob job = new FillBillingJob();
