@@ -73,8 +73,9 @@ public class FillBillingJob implements Job {
                 outputStream.write(buffer);
                 
                 outputStream.close();
-     
-                System.out.println("File uploaded");
+                
+                System.out.println("\n\nArquivo enviado para o CBIL");     
+                System.out.println("File uploaded\n\n");
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -91,28 +92,7 @@ public class FillBillingJob implements Job {
            	String time = dfT.format(localDateTime);
            	String date = df.format(localDateTime);
            	
-        	/*sbt.append("HDJT            DJT "
-           			+ date +time + "0PTOACESSO201830               \n");
-           	//sbt.append("M20180401101010201830                                  ");
-           	sbt.append("M" + date + time + accessPoint  + "                                  ");
-           	int counter = 10 - quantity.toString().length();
-        	String leftZerosQty = "";
-        	while(counter>0){
-        		leftZerosQty +="0";
-        		counter--;
-        	}
-        	sbt.append(leftZerosQty+quantity);
-           	sbt.append("\n");
-           	sbt.append("T000000000000001\n");
-        	
-           	
-        	StringBuilder mock = new StringBuilder(); 
-        	mock.append("HDJT            DJT 201804010830450PTOACESSO201830               \r\n");
-        	mock.append("M20180401101010201830                                  0002250000\r\n");
-            mock.append("T000000000000001\r\n");
-			*/
-
-        	
+       	
         	StringBuilder sb = new StringBuilder();
         	
         	String pto = "PTOACESSO" + accessPoint;

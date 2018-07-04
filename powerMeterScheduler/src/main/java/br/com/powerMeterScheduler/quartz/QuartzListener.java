@@ -14,6 +14,7 @@ import org.quartz.TriggerBuilder;
 import org.quartz.ee.servlet.QuartzInitializerListener;
 import org.quartz.impl.StdSchedulerFactory;
 
+import br.com.powerMeterScheduler.job.FillBillingJob;
 import br.com.powerMeterScheduler.job.FillDojotDeviceJob;
 import br.com.powerMeterScheduler.job.PowerMeterJob;
 import br.com.powerMeterScheduler.util.Util;
@@ -23,6 +24,7 @@ public class QuartzListener extends QuartzInitializerListener {
 
 	Integer powerMeterRepetitionTime = Integer.valueOf(Util.getConfig(Util.POWER_METER_REPETIION_TIME));
 	Integer fillDojotDeviceRepetitionTime = Integer.valueOf(Util.getConfig(Util.FILL_DOJOT_DEVICE_REPETITION_TIME));
+	Integer fillCbillRepetitionTime = Integer.valueOf(Util.getConfig(Util.FILL_DOJOT_DEVICE_REPETITION_TIME));
 	Integer elapseTimeBetweenProcess = Integer.valueOf(Util.getConfig(Util.ELAPSE_TIME_BETWEEN_PROCESS)) * 1000; // converte para milis
 	
     @Override
@@ -39,19 +41,25 @@ public class QuartzListener extends QuartzInitializerListener {
 
            	JobKey jobKeyFillDojotDevice = new JobKey("jobKeyFillDojotDevice", "equipe3");
         	JobDetail jobFillDojotDevice = JobBuilder.newJob(FillDojotDeviceJob.class).withIdentity(jobKeyFillDojotDevice).build();
+        	
+        	JobKey jobKeyFillCbill = new JobKey("jobKeyFillCbill", "equipe3");
+        	JobDetail jobFillCbill = JobBuilder.newJob(FillBillingJob.class).withIdentity(jobKeyFillCbill).build();
 
         	Trigger triggerPowerMeter = TriggerBuilder
         			.newTrigger().withIdentity("powerMeterTriggerName", "equipe3").withSchedule(SimpleScheduleBuilder.repeatSecondlyForever(powerMeterRepetitionTime)).build();
         
         	Trigger triggerFillDojotDevice = TriggerBuilder
         			.newTrigger().withIdentity("fillDojotDeviceTriggerName", "equipe3").withSchedule(SimpleScheduleBuilder.repeatSecondlyForever(fillDojotDeviceRepetitionTime)).build();
-         	
+ 
+        	Trigger triggerFillCbill = TriggerBuilder
+        			.newTrigger().withIdentity("fillCbillTriggerName", "equipe3").withSchedule(SimpleScheduleBuilder.repeatSecondlyForever(fillCbillRepetitionTime)).build();
         	
         	Scheduler scheduler = factory.getScheduler();
         	scheduler.start();
         	scheduler.scheduleJob(jobPowerMeter, triggerPowerMeter);
         	Thread.sleep(elapseTimeBetweenProcess);
         	scheduler.scheduleJob(jobFillDojotDevice, triggerFillDojotDevice);
+        	scheduler.scheduleJob(jobFillCbill, triggerFillCbill);
         	
             
         } catch (Exception e) {

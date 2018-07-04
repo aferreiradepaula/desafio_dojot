@@ -32,6 +32,7 @@ public class Util {
 	public static final String FILE_LAST_SENT_CBILL_CONTENT_NAME = "file_last_sent_cbill_content_name";
 	public static final String POWER_METER_REPETIION_TIME = "power_meter_repetition_time";
 	public static final String FILL_DOJOT_DEVICE_REPETITION_TIME = "fill_dojot_device_repetition_time";
+	public static final String FILL_CBILL_REPETITION_TIME = "fill_cbill_repetition_time";
 	public static final String ELAPSE_TIME_BETWEEN_PROCESS = "elapse_time_between_process";
 	public static final String DEVICE_READER_COMMAND = "device_reader_command";
 	private static final Path filePath = Paths.get(getConfig(Util.FILE_CONTENT_PATH)+getConfig(Util.FILE_CONTENT_NAME));
