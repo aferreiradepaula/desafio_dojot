@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<title>CPqD - Projetos</title>
+		
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=0.5, maximum-scale=0.5">
+
+		<link rel="stylesheet" href="css\bootstrap.min.css">
+		<link rel="stylesheet" href="css\index.css">
+		
+		<script type="text/javascript" src="js\jquery-3.3.1.js"></script>
+		<script type="text/javascript" src="js\bootstrap.min.js"></script>
+
+	</head>
+
+	<body>
+		<div id="divPrincipal" class="container, divPrincipal">
+				<div id="divToCenterLoginDiv" class="row verticalSpacer150"></div>
+				<center>
+					<div id="loginDiv" class="row loginDiv" style="text-align:center">
+						
+						<img src="img/login3.png"  style="position:relative;top:-40px;left:-135px"/>
+
+						<div id="imagemLoginScreenDiv" class="row imagemLoginScreenDiv" style="margin-top:-70px">
+							<img src="img/usuarioWilton.png" class="imagemLoginScreen"/>
+						</div>
+
+						<div class="row verticalSpacer15"></div>
+						
+						<div class="row labelUsuarioSenha">
+							Usuario
+						</div>
+						<div class="row">
+							<input id="usuario" type="text" class="inputUsuarioSenha">
+						</div>
+						
+						<div class="row verticalSpacer10"></div>
+						
+						<div class="row labelUsuarioSenha">
+							Senha
+						</div>
+						<div class="row">
+							<input id="senha" type="password" class="inputUsuarioSenha" >
+						</div>
+						
+						<div class="row verticalSpacer30"></div>
+
+						<div class="row">
+							<center>
+								<div class="loginOkButton" onclick="location.href = 'cards.html'">
+									Entrar
+								</div>
+							</center>
+						</div>
+					</div>
+				</center>
+			
+		</div>
+	</body>
+	
+	<script type="text/javascript">
+		jQuery(document).ready(function(){
+		
+			jQuery("#divPrincipal").height(jQuery(window).height());
+			jQuery("#divToCenterLoginDiv").css("height", ((jQuery(window).height()/2) - (jQuery("#loginDiv").height() / 2))+"px");
+			jQuery(window).resize(function(){
+				jQuery("#divPrincipal").height(jQuery(window).height());
+				jQuery("#divToCenterLoginDiv").css("height", ((jQuery(window).height()/2) - (jQuery("#loginDiv").height() / 2))+"px");
+			});
+			
+
+		});
+
+
+	</script>
+	
+</html>

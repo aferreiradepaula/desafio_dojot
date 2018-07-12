@@ -1,0 +1,78 @@
+			.divPrincipal{
+				--background: url('../img/fundo_1.jpg')no-repeat;background-size: cover; 
+				background: url('../img/fundo_1.jpg')repeat; 
+			}
+			
+			.loginDiv{
+				text-align:center;
+				height:400px;
+				background:rgba(0,0,0,0.5);
+				width:300px;
+				box-shadow: 2px 2px #222;
+				border-radius: 5px;
+				z-index:10;
+			}
+			
+			.verticalSpacer150{height:150px;}
+			.verticalSpacer50{height:50px;}
+			.verticalSpacer40{height:40px;}
+			.verticalSpacer30{height:30px;}
+			.verticalSpacer20{height:20px;}
+			.verticalSpacer15{height:15px;}
+			.verticalSpacer10{height:10px;}
+			
+			body{
+				overflow:hidden;
+			}
+			
+			.inputUsuarioSenha{
+				height:35px;
+				width:250px;
+				font-family: Arial;
+				font-size:20px;
+				padding-left:5px;
+				border:none;
+				background:rgba(70,70,70,0.5);
+				color:#aaa;
+			}
+			
+			.labelUsuarioSenha{
+				width:180px;
+				font-family: Arial;
+				color:#fff;
+				text-align:left; 
+				margin-left:25px;
+			}
+			
+			.labelLoginScreen{
+				font-family: Helvetica;
+				font-size:25px;
+				font-weight:bold;
+				color:#fff;
+			}
+			
+			.imagemLoginScreenDiv{
+				opacity:1.0;
+			}
+
+			.imagemLoginScreen{
+				opacity:1.0;
+				z-index: 999999;
+				width:120px;
+				
+			}
+			
+			.loginOkButton{
+				padding-top:3px;
+				height:35px;
+				width:250px;
+				background:rgba(0,100,149, 0.3);
+				border-radius: 5px;
+				font-weight:bold;
+				font-family: Arial;
+				font-size:20px;
+				cursor:pointer;
+				color:#fff;
+				z-index:99;
+
+			}
